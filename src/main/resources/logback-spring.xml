@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+    <springProperty scope="context" name="appname" source="spring.application.name"/>
+    <!-- ######################## -->
+    <!-- local Profile  -->
+    <!-- ######################## -->
+    <springProfile name="dev">
+        <include resource="logback-dev.xml"/>
+    </springProfile>
+
+
+    <!-- ######################## -->
+    <!-- staging Profile  -->
+    <!-- ######################## -->
+    <springProfile name="stg">
+        <include resource="logback-stg.xml"/>
+    </springProfile>
+
+
+    <!-- ######################## -->
+    <!-- staging Profile  -->
+    <!-- ######################## -->
+    <springProfile name="pre">
+        <include resource="logback-pre.xml"/>
+    </springProfile>
+
+
+    <!-- ######################## -->
+    <!-- prod Profile  -->
+    <!-- ######################## -->
+    <springProfile name="pro">
+        <include resource="logback-pro.xml"/>
+    </springProfile>
+</configuration>

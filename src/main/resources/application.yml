@@ -1,0 +1,67 @@
+server:
+  port: ${server_port}
+  ignore-paths: /gateway/*,/user/login,/channel/uploadChannelCert,/swagger-ui.html
+  enable-mvc: true
+  max-http-header-size: 100MB
+
+spring:
+  application:
+    name: pay-svc
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: ${dc.url}
+      username: ${dc.username}
+      password: ${dc.password}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      min-idle: 5
+      max-wait: 3000
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 30000
+      stat-view-servlet:
+        url-pattern: /druid/*  # 监控页面访问路径
+        # 允许清空统计数据
+        reset-enable: true
+        login-username: admin
+        login-password: 123456
+  redis:
+    host: ${spring.redis.host}
+    password:
+    lettuce:
+      pool:
+        max-active: 60
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  typeAliasesPackage: com.zhch.**.entity
+  global-config:
+    db-config:
+      id-type: input
+      field-strategy: NOT_EMPTY
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+
+logging:
+  level:
+    com.zhch: ${logging_level}
+  file:
+    name: pay-svc
+
+swagger:
+  base-package: com.zhch.paysvc
+  version: 2.0.0
+  enabled: ${swagger.enabled}
+
+handle:
+  scan:
+    package: com.zhch.paysvc.handler

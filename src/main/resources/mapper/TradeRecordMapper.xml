@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhch.paysvc.mapper.TradeRecordMapper">
+
+    <select id="getTradeRecord" resultType="com.zhch.paysvc.entity.TradeRecord">
+        SELECT a.*, b.hospital_name
+        FROM trade_record a
+        LEFT JOIN hospital_config b on a.hospital_code = b.hospital_code
+        <where>
+            <if test="tradeNo!=null and tradeNo!=''">
+                AND a.trade_no=#{tradeNo,jdbcType=VARCHAR}
+            </if>
+            <if test="transactionId!=null and transactionId!=''">
+                AND a.transaction_id=#{transactionId,jdbcType=VARCHAR}
+            </if>
+            <if test="channelCode!=null and channelCode!=''">
+                AND a.channel_code = #{channelCode,jdbcType=VARCHAR}
+            </if>
+            <if test="outTradeNo!=null and outTradeNo!=''">
+                AND a.out_trade_no = #{outTradeNo,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="getTradeRecords" resultType="com.zhch.paysvc.dto.TradeRecordDto">
+        SELECT a.*, b.hospital_name
+        FROM trade_record a
+        LEFT JOIN hospital_config b on a.hospital_code = b.hospital_code
+        <where>
+            <if test="tradeNo!=null and tradeNo != ''">
+                AND a.trade_no=#{tradeNo,jdbcType=VARCHAR}
+            </if>
+            <if test="transactionId!=null and transactionId != ''">
+                AND a.transaction_id=#{transactionId,jdbcType=VARCHAR}
+            </if>
+            <if test="channelCode!=null and channelCode != ''">
+                AND a.channel_code = #{channelCode,jdbcType=VARCHAR}
+            </if>
+            <if test="hospitalCode!=null and hospitalCode != ''">
+                AND a.hospital_code = #{hospitalCode,jdbcType=VARCHAR}
+            </if>
+            <if test="outTradeNo!=null and outTradeNo != ''">
+                AND a.out_trade_no = #{outTradeNo,jdbcType=VARCHAR}
+            </if>
+            <if test="phone!=null and phone != ''">
+                AND a.phone=#{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="name!=null and name != ''">
+                AND a.name=#{name,jdbcType=VARCHAR}
+            </if>
+            <if test="payType!=null and payType != ''">
+                AND a.pay_type=#{payType,jdbcType=VARCHAR}
+            </if>
+            <if test="state!=null and state != ''">
+                AND a.state=#{state,jdbcType=VARCHAR}
+            </if>
+            <if test="createdStartAt != null and createdStartAt != ''">
+                and a.created_at >= STR_TO_DATE(#{createdStartAt,jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="createdEndAt != null and createdEndAt != ''">
+                and  <![CDATA[  a.created_at <= STR_TO_DATE(#{createdEndAt,jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s') ]]>
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+    <select id="getTradeDetail" resultType="com.zhch.paysvc.dto.TradeRecordDto">
+        SELECT a.*, b.hospital_name
+        FROM trade_record a
+                 LEFT JOIN hospital_config b on a.hospital_code = b.hospital_code
+        where a.id = #{id}
+    </select>
+</mapper>
